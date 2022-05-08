@@ -10,8 +10,6 @@ public interface IInvestorService {
 
     public Investor create();
 
-    public  Investor getByID(String id);
-
     /**
      * add funds to the investors funds list
      */

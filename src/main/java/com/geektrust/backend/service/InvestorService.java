@@ -24,8 +24,8 @@ public class InvestorService implements  IInvestorService{
         return investorRepo.save(investor);
     }
 
-    @Override
-    public Investor getByID(String id) {
+
+    private Investor getByID(String id) {
         return investorRepo.getByID(id);
     }
 
