@@ -591,4 +591,5 @@ public class MutualFundConstants {
             "    }\n" +
             "  ]\n" +
             "}";
+    public static final Integer STOCK_NAME_START_POS = 2;
 }

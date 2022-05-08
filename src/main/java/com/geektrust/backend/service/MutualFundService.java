@@ -22,27 +22,12 @@ public class MutualFundService implements IMutualFundService{
 
     @Override
     public void loadFunds() {
-//        StringBuffer stockData= new StringBuffer();
-//        BufferedReader reader;
-//        try {
-//            String inputFile = "sample_input"+ File.separator+"stock_data.json";
-//            reader = new BufferedReader(new FileReader(inputFile));
-//            String line = reader.readLine();
-//            while (line != null) {
-//                stockData.append(line);
-//                line = reader.readLine();
-//            }
-//            reader.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
         JSONObject stockDataObj = new JSONObject(MutualFundConstants.stockData);
         JSONArray funds = stockDataObj.getJSONArray("funds");
 
         for(int i = 0 ; i< funds.length();i++){
             JSONObject fund = funds.getJSONObject(i);
-
             String fundName = (String)fund.get("name");
             JSONArray stockArr = fund.getJSONArray("stocks");
             List<String> stocks = new ArrayList<>();

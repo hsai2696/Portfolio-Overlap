@@ -43,7 +43,9 @@ public class InvestorService implements  IInvestorService{
         for(int i = 0; i < fundIds.size(); i++){
             MutualFund existing = mutualFundService.getFundByName(fundIds.get(i));
             MutualFund present = mutualFundService.getFundByName(newFund);
-            System.out.println(newFund+" "+existing.getName()+" "+mutualFundService.getOverLap(existing,present)+"%");
+            String overlappingPercentage = mutualFundService.getOverLap(existing,present);
+            if(Double.parseDouble(overlappingPercentage) > 0)
+                System.out.println(newFund+" "+existing.getName()+" "+overlappingPercentage+"%");
         }
     }
 }
