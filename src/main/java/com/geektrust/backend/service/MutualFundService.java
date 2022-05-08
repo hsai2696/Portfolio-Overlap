@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 public class MutualFundService implements IMutualFundService{
 
-    IMutualFundRepo mutualFundRepo;
+    private IMutualFundRepo mutualFundRepo;
 
     public MutualFundService(IMutualFundRepo mutualFundRepo){
         this.mutualFundRepo = mutualFundRepo;

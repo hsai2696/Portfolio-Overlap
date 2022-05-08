@@ -3,11 +3,11 @@ package com.geektrust.backend.entity;
 import java.util.List;
 
 public class Investor {
-    String id;
+    private String id;
     /**
      * List of the mutual fund ids that are owned by the investor
      */
-    List<String> funds;
+    private List<String> funds;
 
 
     public Investor(String id){

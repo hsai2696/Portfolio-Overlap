@@ -9,8 +9,8 @@ import java.util.List;
 
 public class InvestorService implements  IInvestorService{
 
-    IInvestorRepo investorRepo;
-    IMutualFundService mutualFundService;
+    private IInvestorRepo investorRepo;
+    private IMutualFundService mutualFundService;
 
     public InvestorService(IInvestorRepo investorRepo,IMutualFundService mutualFundService){
         this.investorRepo = investorRepo;

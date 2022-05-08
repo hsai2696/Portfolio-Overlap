@@ -4,9 +4,9 @@ import java.util.List;
 
 public class MutualFund {
 
-    String id;
-    String name;
-    List<String> stocks;
+    private String id;
+    private String name;
+    private List<String> stocks;
 
 
     public MutualFund(String name, List<String> stocks) {
