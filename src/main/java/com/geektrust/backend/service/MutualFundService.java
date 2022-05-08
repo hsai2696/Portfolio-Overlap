@@ -3,12 +3,11 @@ package com.geektrust.backend.service;
 import com.geektrust.backend.entity.MutualFund;
 import com.geektrust.backend.exception.MutualFundNotFoundException;
 import com.geektrust.backend.repository.IMutualFundRepo;
+import com.geektrust.backend.util.MutualFundConstants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -23,21 +22,22 @@ public class MutualFundService implements IMutualFundService{
 
     @Override
     public void loadFunds() {
-        StringBuffer stockData= new StringBuffer();
-        try {
-            // the file to be opened for reading
-            FileInputStream fis = new FileInputStream("sample_input"+ File.separator+"stock_data.json");
-            Scanner sc = new Scanner(fis); // file to be scanned
-            // returns true if there is another line to read
-            while (sc.hasNextLine()) {
-                stockData.append(sc.nextLine());
-            }
-            sc.close(); // closes the scanner
-        } catch (IOException e) {
-        }
+//        StringBuffer stockData= new StringBuffer();
+//        BufferedReader reader;
+//        try {
+//            String inputFile = "sample_input"+ File.separator+"stock_data.json";
+//            reader = new BufferedReader(new FileReader(inputFile));
+//            String line = reader.readLine();
+//            while (line != null) {
+//                stockData.append(line);
+//                line = reader.readLine();
+//            }
+//            reader.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-        JSONObject stockDataObj = new JSONObject(stockData.toString());
-
+        JSONObject stockDataObj = new JSONObject(MutualFundConstants.stockData);
         JSONArray funds = stockDataObj.getJSONArray("funds");
 
         for(int i = 0 ; i< funds.length();i++){
