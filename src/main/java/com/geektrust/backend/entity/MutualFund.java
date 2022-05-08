@@ -28,9 +28,7 @@ public class MutualFund {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+
 
     public List<String> getStocks() {
         return stocks;
@@ -40,12 +38,5 @@ public class MutualFund {
         this.stocks = stocks;
     }
 
-    @Override
-    public String toString() {
-        return "MutualFund{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", stocks=" + stocks +
-                '}';
-    }
+
 }

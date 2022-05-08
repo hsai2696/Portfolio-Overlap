@@ -25,7 +25,7 @@ public class AddStockCommand implements ICommand{
             try{
                 mutualFundService.addStock(fundName,stockName);
             }catch (Exception e){
-                System.out.println(e.getMessage());
+                System.out.print(e.getMessage()+"\n");
             }
         }
 

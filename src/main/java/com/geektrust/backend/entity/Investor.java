@@ -13,10 +13,6 @@ public class Investor {
     public Investor(String id){
         this.id = id;
     }
-    public Investor(String id, List<String> funds) {
-        this.id = id;
-        this.funds = funds;
-    }
 
     public String getId(){
         return this.id;
