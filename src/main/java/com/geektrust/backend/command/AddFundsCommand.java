@@ -15,7 +15,8 @@ public class AddFundsCommand implements ICommand{
     @Override
     public void execute(List<String> input) {
         if(input!=null && input.size() >= CommandConstants.ADD_FUND_MIN_SIZE){
-            investorService.addFunds(InvestorConstants.investorId,input.subList(1,input.size()));
+            investorService.addFunds(InvestorConstants.investorId,
+                    input.subList(CommandConstants.ADD_FUND_FUND_START_POS,input.size()));
         }
 
     }
