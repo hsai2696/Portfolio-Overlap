@@ -18,7 +18,7 @@ public class CalculateOverLapCommand implements ICommand{
     @Override
     public void execute(List<String> input) {
             try{
-                investorService.getOverLap(input.get(1));
+                investorService.getOverLap(InvestorConstants.investorId,input.get(1));
             }catch(Exception e){
                 System.out.print(e.getMessage()+"\n");
             }

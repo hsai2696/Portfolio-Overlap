@@ -6,11 +6,12 @@ import com.geektrust.backend.repository.IInvestorRepo;
 import com.geektrust.backend.util.InvestorConstants;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class InvestorService implements  IInvestorService{
 
-    private IInvestorRepo investorRepo;
-    private IMutualFundService mutualFundService;
+    private final IInvestorRepo investorRepo;
+    private final IMutualFundService mutualFundService;
 
     public InvestorService(IInvestorRepo investorRepo,IMutualFundService mutualFundService){
         this.investorRepo = investorRepo;
@@ -19,33 +20,32 @@ public class InvestorService implements  IInvestorService{
 
 
     @Override
-    public Investor create() {
+    public void create() {
         Investor investor = new Investor(InvestorConstants.investorId);
-        return investorRepo.save(investor);
-    }
-
-
-    private Investor getByID(String id) {
-        return investorRepo.getByID(id);
+        investorRepo.save(investor);
     }
 
     @Override
-    public Investor addFunds(List<String> funds) {
-        Investor investor = getByID(InvestorConstants.investorId);
-        investor.setFunds(funds);
-        return investorRepo.save(investor);
+    public void addFunds(String investorId, List<String> funds) {
+        Investor investor = investorRepo.getByID(investorId);
+
+        investor.setFunds(funds.stream()
+                .map((fundName) -> mutualFundService.getFundByName(fundName))
+                .collect(Collectors.toList()));
+
+        investorRepo.save(investor);
     }
 
     @Override
-    public void getOverLap(String newFund) {
-        Investor investor = getByID(InvestorConstants.investorId);
-        List<String> fundIds = investor.getFunds();
-        for(int i = 0; i < fundIds.size(); i++){
-            MutualFund existing = mutualFundService.getFundByName(fundIds.get(i));
-            MutualFund present = mutualFundService.getFundByName(newFund);
-            String overlappingPercentage = mutualFundService.getOverLap(existing,present);
-            if(Double.parseDouble(overlappingPercentage) > 0)
-                System.out.print(newFund+" "+existing.getName()+" "+overlappingPercentage+"%\n");
-        }
+    public void getOverLap(String investorId,String newFund) {
+        Investor investor = investorRepo.getByID(investorId);
+        MutualFund overlapFund = mutualFundService.getFundByName(newFund);
+        investor.getFunds().stream()
+                .forEach((portfolioFund)->{
+            String overlappingPercentage = mutualFundService.getOverLap(portfolioFund, overlapFund);
+            if (Double.parseDouble(overlappingPercentage) > 0)
+                System.out.print(newFund + " " + portfolioFund.getName() + " " + overlappingPercentage + "%\n");
+        });
+
     }
 }

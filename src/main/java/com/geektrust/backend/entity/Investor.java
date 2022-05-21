@@ -7,7 +7,7 @@ public class Investor {
     /**
      * List of the mutual fund ids that are owned by the investor
      */
-    private List<String> funds;
+    private List<MutualFund> funds;
 
 
     public Investor(String id){
@@ -18,11 +18,11 @@ public class Investor {
         return this.id;
     }
 
-    public List<String> getFunds() {
+    public List<MutualFund> getFunds() {
         return funds;
     }
 
-    public void setFunds(List<String> funds) {
+    public void setFunds(List<MutualFund> funds) {
         this.funds = funds;
     }
 }

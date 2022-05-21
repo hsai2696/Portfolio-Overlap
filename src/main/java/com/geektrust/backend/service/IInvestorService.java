@@ -1,22 +1,19 @@
 package com.geektrust.backend.service;
 
 
-import com.geektrust.backend.entity.Investor;
-import com.geektrust.backend.exception.MutualFundNotFoundException;
-
 import java.util.List;
 
 public interface IInvestorService {
 
-    public Investor create();
+    void create();
 
     /**
      * add funds to the investors funds list
      */
-    public Investor addFunds(List<String> funds);
+    void addFunds(String investorId, List<String> funds);
     /**
      * To get the overlap between two mutual funds
      */
-    public void getOverLap(String newFund);
+    void getOverLap(String investorId,String newFund);
 
 }

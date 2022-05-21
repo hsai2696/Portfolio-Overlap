@@ -7,14 +7,12 @@ import com.geektrust.backend.util.MutualFundConstants;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class MutualFundService implements IMutualFundService{
 
-    private IMutualFundRepo mutualFundRepo;
+    private final IMutualFundRepo mutualFundRepo;
 
     public MutualFundService(IMutualFundRepo mutualFundRepo){
         this.mutualFundRepo = mutualFundRepo;
@@ -28,7 +26,7 @@ public class MutualFundService implements IMutualFundService{
 
         for(int i = 0 ; i< funds.length();i++){
             JSONObject fund = funds.getJSONObject(i);
-            String fundName = (String)fund.get("name");
+            String fundName = fund.getString("name");
             JSONArray stockArr = fund.getJSONArray("stocks");
             List<String> stocks = new ArrayList<>();
             for(int j = 0; j < stockArr.length();j++){
@@ -64,13 +62,14 @@ public class MutualFundService implements IMutualFundService{
         List<String> newStocks = present.getStocks();
         List<String> existingStocks = existing.getStocks();
         int commonStocksCnt = 0;
-        for(int i = 0 ; i<newStocks.size();i++){
-            if(existingStocks.contains(newStocks.get(i))){
+        for (String newStock : newStocks) {
+            if (existingStocks.contains(newStock)) {
                 commonStocksCnt++;
             }
         }
         int totalStocks = (newStocks.size()+existingStocks.size());
-        double result = (double)(2.0*(commonStocksCnt)/(totalStocks)*100.0);
+        //(double)(2.0*(commonStocksCnt)/(totalStocks)*100.0);
+        double result = 2.0*(commonStocksCnt)/(totalStocks)*100.0;
         return String.format("%.2f",Math.round(result*100.00)/100.00);
     }
 
