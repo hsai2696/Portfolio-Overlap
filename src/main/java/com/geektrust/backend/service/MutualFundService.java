@@ -6,10 +6,6 @@ import com.geektrust.backend.exception.MutualFundNotFoundException;
 import com.geektrust.backend.repository.IMutualFundRepo;
 import com.geektrust.backend.repository.IStockRepo;
 import com.geektrust.backend.util.MutualFundConstants;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class MutualFundService implements IMutualFundService{
@@ -25,7 +21,10 @@ public class MutualFundService implements IMutualFundService{
 
     @Override
     public MutualFund getFundByName(String name) throws MutualFundNotFoundException {
-        return mutualFundRepo.getAll().stream()
+        List<MutualFund> funds = mutualFundRepo
+                .getAll()
+                .orElseThrow(()->new MutualFundNotFoundException(MutualFundConstants.FUND_MISSING_MESSAGE));
+        return funds.stream()
                 .filter((fund)->fund.getName().equals(name))
                 .findAny()
                 .orElseThrow(()->new MutualFundNotFoundException(MutualFundConstants.FUND_MISSING_MESSAGE));

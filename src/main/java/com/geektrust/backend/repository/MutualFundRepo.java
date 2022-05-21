@@ -1,12 +1,8 @@
 package com.geektrust.backend.repository;
 
 import com.geektrust.backend.entity.MutualFund;
-import com.geektrust.backend.exception.MutualFundNotFoundException;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class MutualFundRepo implements IMutualFundRepo{
 
@@ -30,18 +26,12 @@ public class MutualFundRepo implements IMutualFundRepo{
     }
 
     @Override
-    public MutualFund getById(String id) {
-        if(mutualFundData==null || mutualFundData.get(id)!=null){
-            throw new MutualFundNotFoundException("FUND_NOT_FOUND");
-        }
-        return mutualFundData.get(id);
-    }
+    public Optional<List<MutualFund>> getAll() {
 
-    @Override
-    public List<MutualFund> getAll() {
-        if(mutualFundData==null){
-           throw new MutualFundNotFoundException("FUND_NOT_FOUND");
+        List<MutualFund> funds = new ArrayList<>();
+        for (MutualFund mutualFund : mutualFundData.values()) {
+            funds.add(mutualFund);
         }
-        return mutualFundData.values().stream().collect(Collectors.toList());
+        return Optional.of(funds);
     }
 }

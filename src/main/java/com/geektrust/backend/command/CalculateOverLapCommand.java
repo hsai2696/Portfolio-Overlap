@@ -1,8 +1,7 @@
 package com.geektrust.backend.command;
 
-import com.geektrust.backend.entity.Investor;
-import com.geektrust.backend.exception.InvestorNotFoundException;
 import com.geektrust.backend.service.IInvestorService;
+import com.geektrust.backend.util.CommandConstants;
 import com.geektrust.backend.util.InvestorConstants;
 
 import java.util.List;
@@ -18,7 +17,8 @@ public class CalculateOverLapCommand implements ICommand{
     @Override
     public void execute(List<String> input) {
             try{
-                investorService.getOverLap(InvestorConstants.investorId,input.get(1));
+                String fundToAdd = input.get(CommandConstants.GET_OVERLAP_FUND_POS);
+                investorService.getOverLap(InvestorConstants.investorId,fundToAdd);
             }catch(Exception e){
                 System.out.print(e.getMessage()+"\n");
             }
