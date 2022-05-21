@@ -592,4 +592,8 @@ public class MutualFundConstants {
             "  ]\n" +
             "}";
     public static final Integer STOCK_NAME_START_POS = 2;
+    public static final String FUND_MISSING_MESSAGE="FUND_NOT_FOUND";
+    public static final double TWO_DIGIT_ROUNDED_DECIMAL_MULTIPLIER=100.00;
+    public static final double OVERLAP_FORMULA_NUMERATOR_MULTIPLIER=2.0;
+    public static final double OVERLAP_FORMULA_DENOMINATOR_MULTIPLIER=100.0;
 }

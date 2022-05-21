@@ -4,18 +4,22 @@ import com.geektrust.backend.command.AddFundsCommand;
 import com.geektrust.backend.command.AddStockCommand;
 import com.geektrust.backend.command.CalculateOverLapCommand;
 import com.geektrust.backend.command.CommandInvoker;
-import com.geektrust.backend.repository.IInvestorRepo;
-import com.geektrust.backend.repository.IMutualFundRepo;
-import com.geektrust.backend.repository.InvestorRepo;
-import com.geektrust.backend.repository.MutualFundRepo;
+import com.geektrust.backend.repository.*;
 import com.geektrust.backend.service.IInvestorService;
 import com.geektrust.backend.service.IMutualFundService;
 import com.geektrust.backend.service.InvestorService;
 import com.geektrust.backend.service.MutualFundService;
+import com.geektrust.backend.util.IFundDataExtractor;
+import com.geektrust.backend.util.JsonFundDataExtractor;
 
 public class AppConfig {
     private final IMutualFundRepo mutualFundRepo = new MutualFundRepo();
-    private final IMutualFundService mutualFundService = new MutualFundService(mutualFundRepo);
+
+    private final IStockRepo stockRepo = new StockRepo();
+
+    private final IFundDataExtractor dataExtractor = new JsonFundDataExtractor(stockRepo,mutualFundRepo);
+
+    private final IMutualFundService mutualFundService = new MutualFundService(mutualFundRepo,stockRepo);
 
     private final IInvestorRepo investorRepo = new InvestorRepo();
     private final IInvestorService investorService = new InvestorService(investorRepo,mutualFundService);
@@ -30,7 +34,7 @@ public class AppConfig {
         /**
          * initialising the available funds and creating an investor
         * */
-        mutualFundService.loadFunds();
+        dataExtractor.extract();
         investorService.create();
 
     }

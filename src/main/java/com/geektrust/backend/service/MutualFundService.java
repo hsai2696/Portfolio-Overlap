@@ -1,8 +1,10 @@
 package com.geektrust.backend.service;
 
 import com.geektrust.backend.entity.MutualFund;
+import com.geektrust.backend.entity.Stock;
 import com.geektrust.backend.exception.MutualFundNotFoundException;
 import com.geektrust.backend.repository.IMutualFundRepo;
+import com.geektrust.backend.repository.IStockRepo;
 import com.geektrust.backend.util.MutualFundConstants;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,28 +16,11 @@ public class MutualFundService implements IMutualFundService{
 
     private final IMutualFundRepo mutualFundRepo;
 
-    public MutualFundService(IMutualFundRepo mutualFundRepo){
+    private final IStockRepo stockRepo;
+
+    public MutualFundService(IMutualFundRepo mutualFundRepo,IStockRepo stockRepo){
         this.mutualFundRepo = mutualFundRepo;
-    }
-
-    @Override
-    public void loadFunds() {
-
-        JSONObject stockDataObj = new JSONObject(MutualFundConstants.stockData);
-        JSONArray funds = stockDataObj.getJSONArray("funds");
-
-        for(int i = 0 ; i< funds.length();i++){
-            JSONObject fund = funds.getJSONObject(i);
-            String fundName = fund.getString("name");
-            JSONArray stockArr = fund.getJSONArray("stocks");
-            List<String> stocks = new ArrayList<>();
-            for(int j = 0; j < stockArr.length();j++){
-                stocks.add(stockArr.getString(j));
-            }
-            MutualFund mutualfund = new MutualFund(fundName,stocks);
-            create(mutualfund);
-        }
-
+        this.stockRepo = stockRepo;
     }
 
     @Override
@@ -43,42 +28,38 @@ public class MutualFundService implements IMutualFundService{
         return mutualFundRepo.getAll().stream()
                 .filter((fund)->fund.getName().equals(name))
                 .findAny()
-                .orElseThrow(()->new MutualFundNotFoundException("FUND_NOT_FOUND"));
-    }
-
-    @Override
-    public MutualFund getById(String id) {
-        return mutualFundRepo.getById(id);
-    }
-
-    @Override
-    public MutualFund create(MutualFund fund) {
-
-        return mutualFundRepo.save(fund);
+                .orElseThrow(()->new MutualFundNotFoundException(MutualFundConstants.FUND_MISSING_MESSAGE));
     }
 
     @Override
     public String getOverLap(MutualFund existing, MutualFund present) {
-        List<String> newStocks = present.getStocks();
-        List<String> existingStocks = existing.getStocks();
+        List<Stock> newStocks = present.getStocks();
+        List<Stock> existingStocks = existing.getStocks();
         int commonStocksCnt = 0;
-        for (String newStock : newStocks) {
+        for (Stock newStock : newStocks) {
             if (existingStocks.contains(newStock)) {
                 commonStocksCnt++;
             }
         }
-        int totalStocks = (newStocks.size()+existingStocks.size());
-        //(double)(2.0*(commonStocksCnt)/(totalStocks)*100.0);
-        double result = 2.0*(commonStocksCnt)/(totalStocks)*100.0;
-        return String.format("%.2f",Math.round(result*100.00)/100.00);
+        return getFormattedOverlapPercentage(newStocks, existingStocks, commonStocksCnt);
+    }
+
+    private String getFormattedOverlapPercentage(List<Stock> newStocks, List<Stock> existingStocks, int commonStocksCnt) {
+        int totalStocks = (newStocks.size()+ existingStocks.size());
+        double result = MutualFundConstants.OVERLAP_FORMULA_NUMERATOR_MULTIPLIER* commonStocksCnt
+                /(totalStocks)*MutualFundConstants.OVERLAP_FORMULA_DENOMINATOR_MULTIPLIER;
+        return String.format("%.2f", Math.round(result
+                * MutualFundConstants.TWO_DIGIT_ROUNDED_DECIMAL_MULTIPLIER)
+                / MutualFundConstants.TWO_DIGIT_ROUNDED_DECIMAL_MULTIPLIER);
     }
 
     @Override
     public MutualFund addStock(String fundName, String stockName) throws MutualFundNotFoundException {
         MutualFund mutualFund = getFundByName(fundName);
-        List<String> stocks = mutualFund.getStocks();
-        if(!stocks.contains(stockName)){
-            stocks.add(stockName);
+        List<Stock> stocks = mutualFund.getStocks();
+        Stock newStock = new Stock(stockName);
+        if(!stocks.contains(newStock)){
+            stocks.add(stockRepo.save(newStock));
         }
         mutualFund.setStocks(stocks);
         return mutualFundRepo.save(mutualFund);

@@ -6,15 +6,15 @@ public class MutualFund {
 
     private String id;
     private String name;
-    private List<String> stocks;
+    private List<Stock> stocks;
 
 
-    public MutualFund(String name, List<String> stocks) {
+    public MutualFund(String name, List<Stock> stocks) {
         this.name = name;
         this.stocks = stocks;
     }
 
-    public MutualFund(String id, String name, List<String> stocks) {
+    public MutualFund(String id, String name, List<Stock> stocks) {
         this.id = id;
         this.name = name;
         this.stocks = stocks;
@@ -30,11 +30,11 @@ public class MutualFund {
 
 
 
-    public List<String> getStocks() {
+    public List<Stock> getStocks() {
         return stocks;
     }
 
-    public void setStocks(List<String> stocks) {
+    public void setStocks(List<Stock> stocks) {
         this.stocks = stocks;
     }
 

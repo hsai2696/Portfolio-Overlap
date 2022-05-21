@@ -17,7 +17,7 @@ public class MutualFundRepo implements IMutualFundRepo{
     }
 
     public MutualFund save(MutualFund mutualFund){
-        MutualFund resultant = null;
+        MutualFund resultant;
         if(mutualFund.getId()==null){
             MutualFund newFund = new MutualFund(Integer.toString(autoIncrement++),mutualFund.getName(),mutualFund.getStocks());
             mutualFundData.put(newFund.getId(), newFund);
