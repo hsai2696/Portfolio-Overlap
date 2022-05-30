@@ -23,6 +23,10 @@ public class Investor {
     }
 
     public void setFunds(List<MutualFund> funds) {
-        this.funds = funds;
+        if(isValidFunds(funds))
+            this.funds = funds;
+    }
+    private boolean isValidFunds(List<MutualFund> funds){
+        return (funds!=null);
     }
 }

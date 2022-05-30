@@ -17,13 +17,13 @@ public class AddStockCommand implements ICommand{
 
         if(input!=null && input.size() >= (CommandConstants.STOCK_NAME_START_POS+1)){
             String fundName = input.get(CommandConstants.ADD_STOCK_FUND_POS);
-            String stockName ="";
+            StringBuilder stockName = new StringBuilder();
             for(int i =CommandConstants.STOCK_NAME_START_POS;i<input.size();i++){
-                stockName+=input.get(i)+" ";
+                stockName.append(input.get(i)).append(" ");
             }
-            stockName = stockName.trim();
+            stockName = new StringBuilder(stockName.toString().trim());
             try{
-                mutualFundService.addStock(fundName,stockName);
+                mutualFundService.addStock(fundName, stockName.toString());
             }catch (Exception e){
                 System.out.print(e.getMessage()+"\n");
             }

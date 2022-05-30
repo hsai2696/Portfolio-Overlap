@@ -30,7 +30,7 @@ public class InvestorService implements  IInvestorService{
         Investor investor = investorRepo.getByID(investorId);
 
         investor.setFunds(funds.stream()
-                .map((fundName) -> mutualFundService.getFundByName(fundName))
+                .map(mutualFundService::getFundByName)
                 .collect(Collectors.toList()));
 
         investorRepo.save(investor);
@@ -40,7 +40,7 @@ public class InvestorService implements  IInvestorService{
     public void getOverLap(String investorId,String newFund) {
         Investor investor = investorRepo.getByID(investorId);
         MutualFund overlapFund = mutualFundService.getFundByName(newFund);
-        investor.getFunds().stream()
+        investor.getFunds()
                 .forEach((portfolioFund)->{
             String overlappingPercentage = mutualFundService.getOverLap(portfolioFund, overlapFund);
             if (Double.parseDouble(overlappingPercentage) > 0)

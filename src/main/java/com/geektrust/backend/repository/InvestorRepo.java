@@ -13,9 +13,8 @@ public class InvestorRepo implements IInvestorRepo{
         investorData = new HashMap<>();
     }
     @Override
-    public Investor save(Investor investor) {
+    public void save(Investor investor) {
         investorData.put(investor.getId(), investor);
-        return investor;
     }
 
     @Override

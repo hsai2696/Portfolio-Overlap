@@ -6,7 +6,9 @@ import com.geektrust.backend.exception.MutualFundNotFoundException;
 import com.geektrust.backend.repository.IMutualFundRepo;
 import com.geektrust.backend.repository.IStockRepo;
 import com.geektrust.backend.util.MutualFundConstants;
+
 import java.util.List;
+import java.util.Optional;
 
 public class MutualFundService implements IMutualFundService{
 
@@ -55,12 +57,14 @@ public class MutualFundService implements IMutualFundService{
     @Override
     public MutualFund addStock(String fundName, String stockName) throws MutualFundNotFoundException {
         MutualFund mutualFund = getFundByName(fundName);
-        List<Stock> stocks = mutualFund.getStocks();
-        Stock newStock = new Stock(stockName);
-        if(!stocks.contains(newStock)){
-            stocks.add(stockRepo.save(newStock));
+
+        if(!mutualFund.checkIfStockExists(stockName)){
+            Optional<Stock> newStock = stockRepo.getByName(stockName);
+            if(!newStock.isPresent())
+                stockRepo.save(new Stock(stockName));
+            mutualFund.setStocks(mutualFund.addStock(stockName));
         }
-        mutualFund.setStocks(stocks);
+
         return mutualFundRepo.save(mutualFund);
     }
 }

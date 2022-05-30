@@ -4,6 +4,7 @@ import com.geektrust.backend.entity.Stock;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class StockRepo implements IStockRepo{
     private Map<String,Stock> stockData;
@@ -29,5 +30,11 @@ public class StockRepo implements IStockRepo{
     @Override
     public Stock getByID(String stockId) {
         return stockData.get(stockId);
+    }
+
+    public Optional<Stock> getByName(String stockName){
+        return stockData.values().stream().filter((stock)->{
+            return stock.getName().equals(stockName);
+        }).findAny();
     }
 }

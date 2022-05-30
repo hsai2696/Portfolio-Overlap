@@ -38,5 +38,15 @@ public class MutualFund {
         this.stocks = stocks;
     }
 
+    public boolean checkIfStockExists(String stockName){
+        return this.stocks.contains(new Stock(stockName));
+    }
+
+    public List<Stock> addStock(String stockName){
+        List<Stock> modifiedStocksList = this.getStocks();
+        modifiedStocksList.add(new Stock(stockName));
+        return modifiedStocksList;
+    }
+
 
 }
